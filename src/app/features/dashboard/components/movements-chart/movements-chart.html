@@ -1,0 +1,14 @@
+<div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+  <h3 class="text-lg font-semibold text-slate-800 mb-4">Movements (Last 7 Days)</h3>
+  <div class="h-72">
+    @if (chartConfig()) {
+      <canvas baseChart
+        [type]="chartConfig()!.type"
+        [data]="chartConfig()!.data"
+        [options]="chartConfig()!.options">
+      </canvas>
+    } @else {
+      <div class="flex items-center justify-center h-full text-slate-400">Loading chart...</div>
+    }
+  </div>
+</div>

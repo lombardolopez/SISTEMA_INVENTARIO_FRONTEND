@@ -1,0 +1,42 @@
+<div class="max-w-lg mx-auto">
+  <div class="flex items-center gap-3 mb-6">
+    <button (click)="cancel()" class="p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+    </button>
+    <h1 class="text-2xl font-bold text-slate-800">{{ isEditMode() ? 'Edit Category' : 'Add Category' }}</h1>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-5">
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">Category Name *</label>
+        <input formControlName="name" type="text" placeholder="e.g. Lumber & Boards"
+          class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none" />
+        @if (form.get('name')?.touched && form.get('name')?.hasError('required')) {
+          <p class="text-xs text-red-500 mt-1">Name is required</p>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">Description</label>
+        <textarea formControlName="description" rows="3" placeholder="Category description..."
+          class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 outline-none resize-none"></textarea>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">Color</label>
+        <div class="flex items-center gap-3">
+          <input formControlName="color" type="color" class="w-10 h-10 rounded cursor-pointer border-0" />
+          <span class="text-sm text-slate-500 font-mono">{{ form.get('color')?.value }}</span>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-3 pt-4 border-t border-slate-200">
+        <button type="button" (click)="cancel()" class="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50">Cancel</button>
+        <button type="submit" [disabled]="loading()" class="px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 disabled:opacity-50">
+          {{ isEditMode() ? 'Update Category' : 'Create Category' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

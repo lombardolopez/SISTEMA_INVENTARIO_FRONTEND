@@ -1,0 +1,40 @@
+import { Movement } from '../models/movement.model';
+
+const d = (daysAgo: number, hours = 10) => {
+  const date = new Date(Date.now() - daysAgo * 86400000);
+  date.setHours(hours, Math.floor(Math.random() * 60), 0);
+  return date;
+};
+
+export const MOCK_MOVEMENTS: Movement[] = [
+  { id: 'm-1',  productId: 'p-1',  productName: 'Pine Board 2x4x8', type: 'entry', quantity: 50, reason: 'purchase', notes: 'Monthly restock from supplier', performedBy: 'Carlos Mendez', createdAt: d(1, 9) },
+  { id: 'm-2',  productId: 'p-1',  productName: 'Pine Board 2x4x8', type: 'exit', quantity: 12, reason: 'production', notes: 'Used for bookshelf project #45', performedBy: 'Carlos Mendez', createdAt: d(1, 14) },
+  { id: 'm-3',  productId: 'p-9',  productName: 'Wood Screws #8 1.5"', type: 'exit', quantity: 3, reason: 'production', notes: 'Cabinet assembly', performedBy: 'Maria Lopez', createdAt: d(1, 11) },
+  { id: 'm-4',  productId: 'p-5',  productName: 'Walnut Board 1x8x6', type: 'exit', quantity: 4, reason: 'production', notes: 'Dining table project', performedBy: 'Carlos Mendez', createdAt: d(2, 8) },
+  { id: 'm-5',  productId: 'p-16', productName: 'Polyurethane Varnish 1qt', type: 'exit', quantity: 2, reason: 'production', notes: 'Finishing bookshelf order', performedBy: 'Maria Lopez', createdAt: d(2, 15) },
+  { id: 'm-6',  productId: 'p-12', productName: 'Drawer Slides 18"', type: 'exit', quantity: 8, reason: 'production', notes: 'Kitchen cabinet set', performedBy: 'Carlos Mendez', createdAt: d(2, 10) },
+  { id: 'm-7',  productId: 'p-21', productName: 'Wood Glue PVA 16oz', type: 'exit', quantity: 2, reason: 'production', notes: 'General workshop use', performedBy: 'Maria Lopez', createdAt: d(3, 9) },
+  { id: 'm-8',  productId: 'p-29', productName: 'Custom Bookshelf Oak', type: 'exit', quantity: 1, reason: 'sale', notes: 'Sold to customer #128', performedBy: 'Ana Rivera', createdAt: d(3, 16) },
+  { id: 'm-9',  productId: 'p-2',  productName: 'Oak Plywood Sheet 4x8', type: 'entry', quantity: 10, reason: 'purchase', notes: 'Supplier delivery - invoice #7823', performedBy: 'Carlos Mendez', createdAt: d(4, 8) },
+  { id: 'm-10', productId: 'p-25', productName: 'Sandpaper 80-Grit Pack', type: 'exit', quantity: 3, reason: 'production', notes: 'Surface prep for staining', performedBy: 'Maria Lopez', createdAt: d(4, 13) },
+  { id: 'm-11', productId: 'p-11', productName: 'Cabinet Hinges (Pair)', type: 'entry', quantity: 20, reason: 'purchase', notes: 'Bulk order from hardware supplier', performedBy: 'Carlos Mendez', createdAt: d(5, 9) },
+  { id: 'm-12', productId: 'p-19', productName: 'Tung Oil Finish 16oz', type: 'exit', quantity: 4, reason: 'production', notes: 'Applied to walnut table', performedBy: 'Maria Lopez', createdAt: d(5, 14) },
+  { id: 'm-13', productId: 'p-3',  productName: 'MDF Panel 4x8', type: 'exit', quantity: 6, reason: 'production', notes: 'Shelving unit components', performedBy: 'Carlos Mendez', createdAt: d(6, 10) },
+  { id: 'm-14', productId: 'p-32', productName: 'Floating Shelves Set (3)', type: 'exit', quantity: 2, reason: 'sale', notes: 'Online order #0392', performedBy: 'Ana Rivera', createdAt: d(6, 15) },
+  { id: 'm-15', productId: 'p-8',  productName: 'Maple Hardwood 1x6x8', type: 'exit', quantity: 6, reason: 'production', notes: 'Kitchen cabinet doors', performedBy: 'Carlos Mendez', createdAt: d(7, 8) },
+  { id: 'm-16', productId: 'p-10', productName: 'Finishing Nails 2"', type: 'entry', quantity: 10, reason: 'purchase', notes: 'Regular restock', performedBy: 'Carlos Mendez', createdAt: d(8, 9) },
+  { id: 'm-17', productId: 'p-28', productName: 'Router Bits Set (15pc)', type: 'exit', quantity: 1, reason: 'adjustment', notes: 'Set damaged, removed from inventory', performedBy: 'Carlos Mendez', createdAt: d(8, 11) },
+  { id: 'm-18', productId: 'p-4',  productName: 'Cedar Plank 1x6x8', type: 'entry', quantity: 30, reason: 'purchase', notes: 'Seasonal stock for outdoor projects', performedBy: 'Carlos Mendez', createdAt: d(10, 8) },
+  { id: 'm-19', productId: 'p-17', productName: 'Wood Stain Walnut 1qt', type: 'entry', quantity: 6, reason: 'purchase', notes: 'Restock - supplier deal', performedBy: 'Maria Lopez', createdAt: d(10, 14) },
+  { id: 'm-20', productId: 'p-24', productName: 'Circular Saw Blade 10"', type: 'entry', quantity: 2, reason: 'purchase', notes: 'Replacement blades', performedBy: 'Carlos Mendez', createdAt: d(12, 9) },
+  { id: 'm-21', productId: 'p-30', productName: 'Dining Table Walnut 6ft', type: 'entry', quantity: 1, reason: 'production', notes: 'Completed production - ready for sale', performedBy: 'Carlos Mendez', createdAt: d(13, 16) },
+  { id: 'm-22', productId: 'p-7',  productName: 'Poplar Board 1x4x8', type: 'exit', quantity: 15, reason: 'production', notes: 'Trim and molding work', performedBy: 'Maria Lopez', createdAt: d(14, 10) },
+  { id: 'm-23', productId: 'p-22', productName: 'Epoxy Adhesive Kit', type: 'entry', quantity: 4, reason: 'purchase', notes: 'Special order for river table', performedBy: 'Carlos Mendez', createdAt: d(15, 8) },
+  { id: 'm-24', productId: 'p-6',  productName: 'Birch Plywood 4x8', type: 'exit', quantity: 4, reason: 'production', notes: 'Cabinet backs and drawer bottoms', performedBy: 'Carlos Mendez', createdAt: d(16, 11) },
+  { id: 'm-25', productId: 'p-13', productName: 'Wood Dowels 3/8" Pack', type: 'exit', quantity: 5, reason: 'production', notes: 'Joint work on shelving', performedBy: 'Maria Lopez', createdAt: d(18, 9) },
+  { id: 'm-26', productId: 'p-31', productName: 'Kitchen Cabinet Set', type: 'exit', quantity: 1, reason: 'sale', notes: 'Delivered to customer - order #0287', performedBy: 'Ana Rivera', createdAt: d(20, 14) },
+  { id: 'm-27', productId: 'p-15', productName: 'Door Knobs Oak', type: 'entry', quantity: 25, reason: 'purchase', notes: 'Bulk hardware order', performedBy: 'Carlos Mendez', createdAt: d(22, 8) },
+  { id: 'm-28', productId: 'p-18', productName: 'White Latex Paint 1gal', type: 'exit', quantity: 2, reason: 'production', notes: 'Painting cabinet frames', performedBy: 'Maria Lopez', createdAt: d(23, 13) },
+  { id: 'm-29', productId: 'p-14', productName: 'Corner Brackets L-Shape', type: 'entry', quantity: 10, reason: 'purchase', notes: 'Hardware restock', performedBy: 'Carlos Mendez', createdAt: d(25, 9) },
+  { id: 'm-30', productId: 'p-27', productName: 'Bar Clamps 24"', type: 'entry', quantity: 4, reason: 'purchase', notes: 'Additional clamps for workshop', performedBy: 'Carlos Mendez', createdAt: d(28, 10) },
+];
