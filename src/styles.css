@@ -1,9 +1,11 @@
 @import "tailwindcss";
 
-/* Explicit source scanning — required because there is no git repo for auto-detection */
-@source "./index.html";
-@source "./app/**/*.html";
-@source "./app/**/*.ts";
+/* Explicit source scanning — paths are relative to the project root (frontend/)
+   because @tailwindcss/postcss uses process.cwd() (= frontend/) as its base,
+   NOT the location of this CSS file (src/). */
+@source "./src/index.html";
+@source "./src/app/**/*.html";
+@source "./src/app/**/*.ts";
 
 @theme {
   --font-sans: 'Inter', sans-serif;
