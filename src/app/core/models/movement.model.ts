@@ -8,7 +8,8 @@ export interface Movement {
   type: MovementType;
   quantity: number;
   reason: MovementReason;
-  notes: string;
+  notes?: string;
   performedBy: string;
-  createdAt: Date;
+  performedByName: string;
+  createdAt: string;
 }

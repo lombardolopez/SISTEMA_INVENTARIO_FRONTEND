@@ -7,6 +7,9 @@ export interface StockAlert {
   currentStock: number;
   minimumStock: number;
   severity: AlertSeverity;
-  createdAt: Date;
   acknowledged: boolean;
+  acknowledgedBy?: string;
+  acknowledgedAt?: string;
+  createdAt: string;
+  updatedAt: string;
 }

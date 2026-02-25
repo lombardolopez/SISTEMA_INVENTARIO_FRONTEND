@@ -20,14 +20,18 @@ export class UserList implements OnInit {
 
   ngOnInit(): void {
     this.loading.set(true);
-    this.userService.getAll().subscribe(u => {
-      this.users.set(u);
+    this.userService.getAll().subscribe((paged) => {
+      this.users.set(paged.content);
       this.loading.set(false);
     });
   }
 
   getRoleLabel(role: string): string {
-    const labels: Record<string, string> = { admin: 'Admin', warehouse_manager: 'Manager', viewer: 'Viewer' };
+    const labels: Record<string, string> = {
+      admin: 'Admin',
+      warehouse_manager: 'Manager',
+      viewer: 'Viewer',
+    };
     return labels[role] || role;
   }
 
@@ -42,7 +46,7 @@ export class UserList implements OnInit {
   deleteUser(id: string): void {
     if (confirm('Are you sure you want to delete this user?')) {
       this.userService.delete(id).subscribe(() => {
-        this.users.update(list => list.filter(u => u.id !== id));
+        this.users.update((list) => list.filter((u) => u.id !== id));
       });
     }
   }

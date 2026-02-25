@@ -15,11 +15,11 @@ export class MainLayout {
   mobileMenuOpen = signal(false);
 
   toggleSidebar(): void {
-    this.sidebarCollapsed.update(v => !v);
+    this.sidebarCollapsed.update((v) => !v);
   }
 
   toggleMobileMenu(): void {
-    this.mobileMenuOpen.update(v => !v);
+    this.mobileMenuOpen.update((v) => !v);
   }
 
   closeMobileMenu(): void {
@@ -28,9 +28,9 @@ export class MainLayout {
 
   onToggle(): void {
     if (window.innerWidth < 1024) {
-      this.mobileMenuOpen.update(v => !v);
+      this.mobileMenuOpen.update((v) => !v);
     } else {
-      this.sidebarCollapsed.update(v => !v);
+      this.sidebarCollapsed.update((v) => !v);
     }
   }
 }

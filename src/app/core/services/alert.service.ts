@@ -1,42 +1,43 @@
-import { Injectable } from '@angular/core';
-import { Observable, of, delay } from 'rxjs';
-import { StockAlert } from '../models/alert.model';
-import { MOCK_PRODUCTS } from '../data/mock-products';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { StockAlert, AlertSeverity } from '../models/alert.model';
+import { ApiResponse } from '../models/api.model';
 
 @Injectable({ providedIn: 'root' })
 export class AlertService {
-  private alerts: StockAlert[] = this.generateAlerts();
+  private readonly url = `${environment.apiUrl}/alerts`;
+  private http = inject(HttpClient);
 
-  private generateAlerts(): StockAlert[] {
-    return MOCK_PRODUCTS
-      .filter(p => p.currentStock <= p.minimumStock)
-      .map((p, i) => ({
-        id: `alert-${i + 1}`,
-        productId: p.id,
-        productName: p.name,
-        currentStock: p.currentStock,
-        minimumStock: p.minimumStock,
-        severity: p.currentStock === 0 ? 'critical' as const : 'warning' as const,
-        createdAt: new Date(p.updatedAt),
-        acknowledged: false,
-      }));
-  }
+  getAll(
+    filters: { acknowledged?: boolean; severity?: AlertSeverity } = {},
+  ): Observable<StockAlert[]> {
+    let params = new HttpParams();
+    if (filters.acknowledged !== undefined)
+      params = params.set('acknowledged', filters.acknowledged);
+    if (filters.severity) params = params.set('severity', filters.severity);
 
-  getAll(): Observable<StockAlert[]> {
-    return of([...this.alerts]).pipe(delay(300));
+    return this.http
+      .get<ApiResponse<StockAlert[]>>(this.url, { params })
+      .pipe(map((res) => res.data));
   }
 
   getActive(): Observable<StockAlert[]> {
-    return of(this.alerts.filter(a => !a.acknowledged)).pipe(delay(200));
+    return this.getAll({ acknowledged: false });
   }
 
   getActiveCount(): Observable<number> {
-    return of(this.alerts.filter(a => !a.acknowledged).length).pipe(delay(100));
+    return this.getActive().pipe(map((alerts) => alerts.length));
   }
 
-  acknowledge(id: string): Observable<void> {
-    const alert = this.alerts.find(a => a.id === id);
-    if (alert) alert.acknowledged = true;
-    return of(undefined as void).pipe(delay(200));
+  acknowledge(id: string): Observable<StockAlert> {
+    return this.http
+      .patch<ApiResponse<StockAlert>>(`${this.url}/${id}/acknowledge`, {})
+      .pipe(map((res) => res.data));
+  }
+
+  generateAlerts(): Observable<void> {
+    return this.http.post<ApiResponse<null>>(`${this.url}/generate`, {}).pipe(map(() => void 0));
   }
 }

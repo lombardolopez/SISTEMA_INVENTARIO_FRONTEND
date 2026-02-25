@@ -19,7 +19,7 @@ export class CategoryList implements OnInit {
 
   ngOnInit(): void {
     this.loading.set(true);
-    this.categoryService.getAll().subscribe(c => {
+    this.categoryService.getAll().subscribe((c) => {
       this.categories.set(c);
       this.loading.set(false);
     });
@@ -36,7 +36,7 @@ export class CategoryList implements OnInit {
   deleteCategory(id: string): void {
     if (confirm('Are you sure you want to delete this category?')) {
       this.categoryService.delete(id).subscribe(() => {
-        this.categories.update(list => list.filter(c => c.id !== id));
+        this.categories.update((list) => list.filter((c) => c.id !== id));
       });
     }
   }

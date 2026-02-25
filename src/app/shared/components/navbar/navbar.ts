@@ -22,7 +22,7 @@ export class Navbar implements OnInit {
   showUserMenu = signal(false);
 
   ngOnInit(): void {
-    this.alertService.getActiveCount().subscribe(count => this.alertCount.set(count));
+    this.alertService.getActiveCount().subscribe((count) => this.alertCount.set(count));
   }
 
   onToggleSidebar(): void {
@@ -30,7 +30,7 @@ export class Navbar implements OnInit {
   }
 
   toggleUserMenu(): void {
-    this.showUserMenu.update(v => !v);
+    this.showUserMenu.update((v) => !v);
   }
 
   logout(): void {

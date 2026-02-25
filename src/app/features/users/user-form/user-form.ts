@@ -28,7 +28,11 @@ export class UserForm implements OnInit {
 
   roleOptions = [
     { value: 'admin', label: 'Admin', desc: 'Full access to all features' },
-    { value: 'warehouse_manager', label: 'Warehouse Manager', desc: 'Manage products, movements and alerts' },
+    {
+      value: 'warehouse_manager',
+      label: 'Warehouse Manager',
+      desc: 'Manage products, movements and alerts',
+    },
     { value: 'viewer', label: 'Viewer', desc: 'Read-only access to inventory data' },
   ];
 
@@ -37,9 +41,14 @@ export class UserForm implements OnInit {
     if (id) {
       this.isEditMode.set(true);
       this.userId = id;
-      this.userService.getById(id).subscribe(u => {
+      this.userService.getById(id).subscribe((u) => {
         if (u) {
-          this.form.patchValue({ name: u.name, email: u.email, role: u.role, isActive: u.isActive });
+          this.form.patchValue({
+            name: u.name,
+            email: u.email,
+            role: u.role,
+            isActive: u.isActive,
+          });
         }
       });
     }

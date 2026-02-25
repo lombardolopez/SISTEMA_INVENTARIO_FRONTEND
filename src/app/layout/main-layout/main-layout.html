@@ -6,10 +6,7 @@
 
   <!-- Mobile Overlay -->
   @if (mobileMenuOpen()) {
-    <div
-      class="fixed inset-0 z-40 bg-black/50 lg:hidden"
-      (click)="closeMobileMenu()"
-    ></div>
+    <div class="fixed inset-0 z-40 bg-black/50 lg:hidden" (click)="closeMobileMenu()"></div>
     <div class="fixed inset-y-0 left-0 z-50 w-64 lg:hidden">
       <app-sidebar [collapsed]="false" (closeMobile)="closeMobileMenu()" />
     </div>

@@ -23,9 +23,9 @@ export class MovementList implements OnInit {
 
   ngOnInit(): void {
     this.loading.set(true);
-    this.movementService.getAll().subscribe(m => {
-      this.movements.set(m);
-      this.filteredMovements.set(m);
+    this.movementService.getAll().subscribe((paged) => {
+      this.movements.set(paged.content);
+      this.filteredMovements.set(paged.content);
       this.loading.set(false);
     });
   }
@@ -46,10 +46,10 @@ export class MovementList implements OnInit {
     const term = this.searchTerm();
 
     if (type !== 'all') {
-      result = result.filter(m => m.type === type);
+      result = result.filter((m) => m.type === type);
     }
     if (term) {
-      result = result.filter(m => m.productName.toLowerCase().includes(term));
+      result = result.filter((m) => m.productName.toLowerCase().includes(term));
     }
     this.filteredMovements.set(result);
   }

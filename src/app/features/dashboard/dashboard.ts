@@ -17,6 +17,6 @@ export class Dashboard implements OnInit {
   stats = signal<DashboardStats | null>(null);
 
   ngOnInit(): void {
-    this.dashboardService.getStats().subscribe(s => this.stats.set(s));
+    this.dashboardService.getStats().subscribe((s) => this.stats.set(s));
   }
 }

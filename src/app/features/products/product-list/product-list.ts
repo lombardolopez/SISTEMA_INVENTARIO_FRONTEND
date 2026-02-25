@@ -39,12 +39,12 @@ export class ProductList implements OnInit {
 
   ngOnInit(): void {
     this.loading.set(true);
-    this.productService.getAll().subscribe(products => {
-      this.products.set(products);
-      this.filteredProducts.set(products);
+    this.productService.getAll().subscribe((paged) => {
+      this.products.set(paged.content);
+      this.filteredProducts.set(paged.content);
       this.loading.set(false);
     });
-    this.categoryService.getAll().subscribe(categories => {
+    this.categoryService.getAll().subscribe((categories) => {
       this.categories.set(categories);
     });
   }
@@ -68,12 +68,12 @@ export class ProductList implements OnInit {
 
     if (term) {
       result = result.filter(
-        p => p.name.toLowerCase().includes(term) || p.sku.toLowerCase().includes(term)
+        (p) => p.name.toLowerCase().includes(term) || p.sku.toLowerCase().includes(term),
       );
     }
 
     if (categoryId) {
-      result = result.filter(p => p.categoryId === categoryId);
+      result = result.filter((p) => p.categoryId === categoryId);
     }
 
     this.filteredProducts.set(result);
@@ -81,14 +81,14 @@ export class ProductList implements OnInit {
   }
 
   getCategoryName(categoryId: string): string {
-    const cat = this.categories().find(c => c.id === categoryId);
+    const cat = this.categories().find((c) => c.id === categoryId);
     return cat ? cat.name : 'Unknown';
   }
 
   deleteProduct(id: string): void {
     if (confirm('Are you sure you want to delete this product?')) {
       this.productService.delete(id).subscribe(() => {
-        this.products.update(list => list.filter(p => p.id !== id));
+        this.products.update((list) => list.filter((p) => p.id !== id));
         this.applyFilters();
       });
     }

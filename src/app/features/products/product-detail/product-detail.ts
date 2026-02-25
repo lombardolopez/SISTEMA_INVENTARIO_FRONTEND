@@ -29,13 +29,15 @@ export class ProductDetail implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.productService.getById(id).subscribe(p => {
+      this.productService.getById(id).subscribe((p) => {
         if (p) {
           this.product.set(p);
-          this.categoryService.getById(p.categoryId).subscribe(c => this.category.set(c ?? null));
+          this.categoryService.getById(p.categoryId).subscribe((c) => this.category.set(c ?? null));
         }
       });
-      this.movementService.getByProductId(id).subscribe(m => this.movements.set(m));
+      this.movementService
+        .getByProductId(id)
+        .subscribe((paged) => this.movements.set(paged.content));
     }
   }
 

@@ -1,35 +1,57 @@
-import { Injectable, signal } from '@angular/core';
-import { Observable, of, delay, throwError } from 'rxjs';
+import { Injectable, inject, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map, tap } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { User, Role } from '../models/user.model';
-import { MOCK_USERS } from '../data/mock-users';
+import { AuthResponse } from '../models/auth.model';
+import { ApiResponse } from '../models/api.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private currentUser = signal<User | null>(MOCK_USERS[0]);
+  private readonly url = `${environment.apiUrl}/auth`;
+  private http = inject(HttpClient);
+
+  private _currentUser = signal<User | null>(this.loadUserFromStorage());
 
   getCurrentUser() {
-    return this.currentUser.asReadonly();
+    return this._currentUser.asReadonly();
   }
 
-  login(email: string, _password: string): Observable<User> {
-    const user = MOCK_USERS.find(u => u.email === email && u.isActive);
-    if (user) {
-      this.currentUser.set(user);
-      return of(user).pipe(delay(500));
-    }
-    return throwError(() => new Error('Invalid credentials'));
+  private loadUserFromStorage(): User | null {
+    const u = localStorage.getItem('user');
+    return u ? JSON.parse(u) : null;
+  }
+
+  login(email: string, password: string): Observable<AuthResponse> {
+    return this.http.post<ApiResponse<AuthResponse>>(`${this.url}/login`, { email, password }).pipe(
+      map((res) => res.data),
+      tap((auth) => {
+        localStorage.setItem('token', auth.token);
+        localStorage.setItem('user', JSON.stringify(auth.user));
+        this._currentUser.set(auth.user);
+      }),
+    );
+  }
+
+  getMe(): Observable<User> {
+    return this.http.get<ApiResponse<User>>(`${this.url}/me`).pipe(map((res) => res.data));
   }
 
   logout(): void {
-    this.currentUser.set(null);
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    this._currentUser.set(null);
   }
 
-  hasRole(...roles: Role[]): boolean {
-    const user = this.currentUser();
-    return user ? roles.includes(user.role) : false;
+  getToken(): string | null {
+    return localStorage.getItem('token');
   }
 
   isAuthenticated(): boolean {
-    return this.currentUser() !== null;
+    return !!this.getToken();
+  }
+
+  hasRole(role: Role): boolean {
+    return this._currentUser()?.role === role;
   }
 }

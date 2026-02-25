@@ -19,15 +19,15 @@ export class StockChart implements OnInit {
   chartConfig = signal<ChartConfiguration<'doughnut'> | null>(null);
 
   ngOnInit(): void {
-    this.dashboardService.getStockByCategory().subscribe(data => {
+    this.dashboardService.getStockByCategory().subscribe((data) => {
       this.chartConfig.set({
         type: 'doughnut',
         data: {
-          labels: data.map(c => c.name),
+          labels: data.map((c) => c.name),
           datasets: [
             {
-              data: data.map(c => c.totalStock),
-              backgroundColor: data.map(c => c.color),
+              data: data.map((c) => c.totalStock),
+              backgroundColor: data.map((c) => c.color),
               borderWidth: 2,
               borderColor: '#ffffff',
             },

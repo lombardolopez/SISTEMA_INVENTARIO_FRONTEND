@@ -5,6 +5,7 @@ export interface Product {
   name: string;
   description: string;
   categoryId: string;
+  categoryName: string;
   sku: string;
   unit: ProductUnit;
   currentStock: number;
@@ -12,8 +13,8 @@ export interface Product {
   unitPrice: number;
   location: string;
   imageUrl?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
-export type ProductFormData = Omit<Product, 'id' | 'createdAt' | 'updatedAt'>;
+export type ProductFormData = Omit<Product, 'id' | 'categoryName' | 'createdAt' | 'updatedAt'>;

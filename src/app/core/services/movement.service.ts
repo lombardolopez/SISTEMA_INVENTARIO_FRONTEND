@@ -1,46 +1,63 @@
-import { Injectable } from '@angular/core';
-import { Observable, of, delay } from 'rxjs';
-import { Movement, MovementType } from '../models/movement.model';
-import { MOCK_MOVEMENTS } from '../data/mock-movements';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { Movement, MovementType, MovementReason } from '../models/movement.model';
+import { ApiResponse, PagedResponse } from '../models/api.model';
 
 @Injectable({ providedIn: 'root' })
 export class MovementService {
-  private movements = [...MOCK_MOVEMENTS];
+  private readonly url = `${environment.apiUrl}/movements`;
+  private http = inject(HttpClient);
 
-  getAll(): Observable<Movement[]> {
-    return of([...this.movements].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())).pipe(delay(300));
+  getAll(
+    filters: {
+      type?: MovementType;
+      from?: string;
+      to?: string;
+      page?: number;
+      size?: number;
+    } = {},
+  ): Observable<PagedResponse<Movement>> {
+    let params = new HttpParams()
+      .set('page', filters.page ?? 0)
+      .set('size', filters.size ?? 10)
+      .set('sort', 'createdAt,desc');
+
+    if (filters.type) params = params.set('type', filters.type);
+    if (filters.from) params = params.set('from', filters.from);
+    if (filters.to) params = params.set('to', filters.to);
+
+    return this.http
+      .get<ApiResponse<PagedResponse<Movement>>>(this.url, { params })
+      .pipe(map((res) => res.data));
   }
 
-  getByProductId(productId: string): Observable<Movement[]> {
-    return of(
-      this.movements
-        .filter(m => m.productId === productId)
-        .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-    ).pipe(delay(200));
+  getById(id: string): Observable<Movement> {
+    return this.http.get<ApiResponse<Movement>>(`${this.url}/${id}`).pipe(map((res) => res.data));
+  }
+
+  getByProductId(productId: string, page = 0, size = 10): Observable<PagedResponse<Movement>> {
+    const params = new HttpParams()
+      .set('page', page)
+      .set('size', size)
+      .set('sort', 'createdAt,desc');
+    return this.http
+      .get<ApiResponse<PagedResponse<Movement>>>(`${this.url}/product/${productId}`, { params })
+      .pipe(map((res) => res.data));
   }
 
   getRecent(limit: number): Observable<Movement[]> {
-    return of(
-      [...this.movements]
-        .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-        .slice(0, limit)
-    ).pipe(delay(200));
+    return this.getAll({ size: limit }).pipe(map((paged) => paged.content));
   }
 
-  getByDateRange(start: Date, end: Date): Observable<Movement[]> {
-    return of(
-      this.movements.filter(m => m.createdAt >= start && m.createdAt <= end)
-        .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-    ).pipe(delay(200));
-  }
-
-  create(data: Omit<Movement, 'id' | 'createdAt'>): Observable<Movement> {
-    const movement: Movement = {
-      ...data,
-      id: 'm-' + crypto.randomUUID().slice(0, 8),
-      createdAt: new Date(),
-    };
-    this.movements.unshift(movement);
-    return of(movement).pipe(delay(300));
+  create(data: {
+    productId: string;
+    type: MovementType;
+    quantity: number;
+    reason: MovementReason;
+    notes?: string;
+  }): Observable<Movement> {
+    return this.http.post<ApiResponse<Movement>>(this.url, data).pipe(map((res) => res.data));
   }
 }
