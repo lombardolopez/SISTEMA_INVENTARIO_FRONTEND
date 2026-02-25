@@ -1,50 +1,61 @@
-import { Injectable } from '@angular/core';
-import { Observable, of, delay, map } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { Product, ProductFormData } from '../models/product.model';
-import { MOCK_PRODUCTS } from '../data/mock-products';
+import { ApiResponse, PagedResponse } from '../models/api.model';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
-  private products = [...MOCK_PRODUCTS];
+  private readonly url = `${environment.apiUrl}/products`;
+  private http = inject(HttpClient);
 
-  getAll(): Observable<Product[]> {
-    return of([...this.products]).pipe(delay(300));
-  }
+  getAll(
+    filters: {
+      search?: string;
+      categoryId?: string;
+      page?: number;
+      size?: number;
+    } = {},
+  ): Observable<PagedResponse<Product>> {
+    let params = new HttpParams()
+      .set('page', filters.page ?? 0)
+      .set('size', filters.size ?? 10)
+      .set('sort', 'createdAt,desc');
 
-  getById(id: string): Observable<Product | undefined> {
-    return of(this.products.find(p => p.id === id)).pipe(delay(200));
-  }
+    if (filters.search) params = params.set('search', filters.search);
+    if (filters.categoryId) params = params.set('categoryId', filters.categoryId);
 
-  create(data: ProductFormData): Observable<Product> {
-    const product: Product = {
-      ...data,
-      id: 'p-' + crypto.randomUUID().slice(0, 8),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    this.products.unshift(product);
-    return of(product).pipe(delay(300));
-  }
-
-  update(id: string, data: Partial<ProductFormData>): Observable<Product> {
-    const index = this.products.findIndex(p => p.id === id);
-    this.products[index] = { ...this.products[index], ...data, updatedAt: new Date() };
-    return of(this.products[index]).pipe(delay(300));
-  }
-
-  delete(id: string): Observable<void> {
-    this.products = this.products.filter(p => p.id !== id);
-    return of(undefined as void).pipe(delay(300));
+    return this.http
+      .get<ApiResponse<PagedResponse<Product>>>(this.url, { params })
+      .pipe(map((res) => res.data));
   }
 
   getLowStock(): Observable<Product[]> {
-    return of(this.products.filter(p => p.currentStock <= p.minimumStock)).pipe(delay(200));
+    return this.http
+      .get<ApiResponse<Product[]>>(`${this.url}/low-stock`)
+      .pipe(map((res) => res.data));
   }
 
-  search(term: string): Observable<Product[]> {
-    const lower = term.toLowerCase();
-    return of(this.products.filter(p =>
-      p.name.toLowerCase().includes(lower) || p.sku.toLowerCase().includes(lower)
-    )).pipe(delay(200));
+  getById(id: string): Observable<Product> {
+    return this.http.get<ApiResponse<Product>>(`${this.url}/${id}`).pipe(map((res) => res.data));
+  }
+
+  create(data: ProductFormData): Observable<Product> {
+    return this.http.post<ApiResponse<Product>>(this.url, data).pipe(map((res) => res.data));
+  }
+
+  update(id: string, data: ProductFormData): Observable<Product> {
+    return this.http
+      .put<ApiResponse<Product>>(`${this.url}/${id}`, data)
+      .pipe(map((res) => res.data));
+  }
+
+  delete(id: string): Observable<void> {
+    return this.http.delete<ApiResponse<null>>(`${this.url}/${id}`).pipe(map(() => void 0));
+  }
+
+  search(term: string): Observable<PagedResponse<Product>> {
+    return this.getAll({ search: term });
   }
 }

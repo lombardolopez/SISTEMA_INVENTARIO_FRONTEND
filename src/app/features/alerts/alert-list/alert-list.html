@@ -6,11 +6,15 @@
 
   <!-- Summary -->
   <div class="flex items-center gap-4">
-    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-50 border border-red-200 rounded-lg text-sm font-medium text-red-700">
+    <span
+      class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-50 border border-red-200 rounded-lg text-sm font-medium text-red-700"
+    >
       <span class="w-2 h-2 bg-red-500 rounded-full"></span>
       {{ criticalCount() }} Critical
     </span>
-    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded-lg text-sm font-medium text-amber-700">
+    <span
+      class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded-lg text-sm font-medium text-amber-700"
+    >
       <span class="w-2 h-2 bg-amber-500 rounded-full"></span>
       {{ warningCount() }} Warnings
     </span>
@@ -18,10 +22,34 @@
 
   <!-- Filter Tabs -->
   <div class="flex rounded-lg border border-slate-300 overflow-hidden text-sm w-fit">
-    <button (click)="onFilter('all')" [class]="filter() === 'all' ? 'bg-primary-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'" class="px-4 py-2 font-medium transition-colors">All</button>
-    <button (click)="onFilter('critical')" [class]="filter() === 'critical' ? 'bg-red-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'" class="px-4 py-2 font-medium border-l border-slate-300 transition-colors">Critical</button>
-    <button (click)="onFilter('warning')" [class]="filter() === 'warning' ? 'bg-amber-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'" class="px-4 py-2 font-medium border-l border-slate-300 transition-colors">Warning</button>
-    <button (click)="onFilter('acknowledged')" [class]="filter() === 'acknowledged' ? 'bg-slate-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'" class="px-4 py-2 font-medium border-l border-slate-300 transition-colors">Acknowledged</button>
+    <button
+      (click)="onFilter('all')"
+      [class]="filter() === 'all' ? 'bg-primary-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'"
+      class="px-4 py-2 font-medium transition-colors"
+    >
+      All
+    </button>
+    <button
+      (click)="onFilter('critical')"
+      [class]="filter() === 'critical' ? 'bg-red-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'"
+      class="px-4 py-2 font-medium border-l border-slate-300 transition-colors"
+    >
+      Critical
+    </button>
+    <button
+      (click)="onFilter('warning')"
+      [class]="filter() === 'warning' ? 'bg-amber-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'"
+      class="px-4 py-2 font-medium border-l border-slate-300 transition-colors"
+    >
+      Warning
+    </button>
+    <button
+      (click)="onFilter('acknowledged')"
+      [class]="filter() === 'acknowledged' ? 'bg-slate-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'"
+      class="px-4 py-2 font-medium border-l border-slate-300 transition-colors"
+    >
+      Acknowledged
+    </button>
   </div>
 
   <!-- Table -->
@@ -50,13 +78,23 @@
                 }
               </td>
               <td class="px-4 py-3 font-medium text-slate-800">{{ a.productName }}</td>
-              <td class="px-4 py-3 text-right font-bold" [class]="a.currentStock === 0 ? 'text-red-600' : 'text-amber-600'">{{ a.currentStock }}</td>
+              <td
+                class="px-4 py-3 text-right font-bold"
+                [class]="a.currentStock === 0 ? 'text-red-600' : 'text-amber-600'"
+              >
+                {{ a.currentStock }}
+              </td>
               <td class="px-4 py-3 text-right text-slate-500">{{ a.minimumStock }}</td>
               <td class="px-4 py-3 text-right font-medium text-red-600">-{{ a.minimumStock - a.currentStock }}</td>
-              <td class="px-4 py-3 text-slate-500 whitespace-nowrap">{{ a.createdAt | date:'MMM d, y' }}</td>
+              <td class="px-4 py-3 text-slate-500 whitespace-nowrap">{{ a.createdAt | date: 'MMM d, y' }}</td>
               <td class="px-4 py-3 text-right">
                 @if (!a.acknowledged) {
-                  <button (click)="acknowledge(a.id)" class="px-3 py-1 text-xs font-medium text-primary-600 border border-primary-300 rounded-lg hover:bg-primary-50 transition-colors">Acknowledge</button>
+                  <button
+                    (click)="acknowledge(a.id)"
+                    class="px-3 py-1 text-xs font-medium text-primary-600 border border-primary-300 rounded-lg hover:bg-primary-50 transition-colors"
+                  >
+                    Acknowledge
+                  </button>
                 } @else {
                   <span class="text-xs text-slate-400">Acknowledged</span>
                 }

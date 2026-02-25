@@ -1,0 +1,10 @@
+# Build & cache
+dist/
+.angular/
+
+# Dependencies
+node_modules/
+
+# Generated / minified
+*.min.js
+*.min.css

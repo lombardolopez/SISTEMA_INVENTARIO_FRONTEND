@@ -46,13 +46,13 @@ export class ProductForm implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.categoryService.getAll().subscribe(c => this.categories.set(c));
+    this.categoryService.getAll().subscribe((c) => this.categories.set(c));
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEditMode.set(true);
       this.productId = id;
       this.loading.set(true);
-      this.productService.getById(id).subscribe(p => {
+      this.productService.getById(id).subscribe((p) => {
         if (p) {
           this.form.patchValue({
             name: p.name,

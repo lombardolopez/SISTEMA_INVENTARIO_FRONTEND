@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { Product } from '../../../core/models/product.model';
 import { ProductService } from '../../../core/services/product.service';
 import { MovementService } from '../../../core/services/movement.service';
-import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-movement-form',
@@ -16,7 +15,6 @@ import { AuthService } from '../../../core/services/auth.service';
 export class MovementForm implements OnInit {
   private productService = inject(ProductService);
   private movementService = inject(MovementService);
-  private authService = inject(AuthService);
   private router = inject(Router);
 
   products = signal<Product[]>([]);
@@ -39,7 +37,7 @@ export class MovementForm implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.productService.getAll().subscribe(p => this.products.set(p));
+    this.productService.getAll().subscribe((paged) => this.products.set(paged.content));
   }
 
   setType(type: 'entry' | 'exit'): void {
@@ -53,17 +51,16 @@ export class MovementForm implements OnInit {
     }
     this.loading.set(true);
     const val = this.form.getRawValue();
-    const product = this.products().find(p => p.id === val.productId);
 
-    this.movementService.create({
-      productId: val.productId!,
-      productName: product?.name ?? '',
-      type: val.type!,
-      quantity: val.quantity!,
-      reason: val.reason! as any,
-      notes: val.notes ?? '',
-      performedBy: this.authService.getCurrentUser()()?.name ?? 'Unknown',
-    }).subscribe(() => this.router.navigate(['/movements']));
+    this.movementService
+      .create({
+        productId: val.productId!,
+        type: val.type!,
+        quantity: val.quantity!,
+        reason: val.reason! as any,
+        notes: val.notes ?? '',
+      })
+      .subscribe(() => this.router.navigate(['/movements']));
   }
 
   cancel(): void {

@@ -30,7 +30,7 @@ export class CategoryForm implements OnInit {
     if (id) {
       this.isEditMode.set(true);
       this.categoryId = id;
-      this.categoryService.getById(id).subscribe(c => {
+      this.categoryService.getById(id).subscribe((c) => {
         if (c) {
           this.form.patchValue({ name: c.name, description: c.description, color: c.color });
         }
@@ -47,7 +47,9 @@ export class CategoryForm implements OnInit {
     const data = this.form.getRawValue() as any;
 
     if (this.isEditMode()) {
-      this.categoryService.update(this.categoryId, data).subscribe(() => this.router.navigate(['/categories']));
+      this.categoryService
+        .update(this.categoryId, data)
+        .subscribe(() => this.router.navigate(['/categories']));
     } else {
       this.categoryService.create(data).subscribe(() => this.router.navigate(['/categories']));
     }

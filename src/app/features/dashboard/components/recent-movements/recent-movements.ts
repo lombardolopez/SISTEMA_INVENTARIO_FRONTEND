@@ -15,6 +15,6 @@ export class RecentMovements implements OnInit {
   movements = signal<Movement[]>([]);
 
   ngOnInit(): void {
-    this.movementService.getRecent(10).subscribe(m => this.movements.set(m));
+    this.movementService.getRecent(10).subscribe((m) => this.movements.set(m));
   }
 }

@@ -4,4 +4,6 @@ export interface Category {
   description: string;
   color: string;
   productCount: number;
+  createdAt: string;
+  updatedAt: string;
 }

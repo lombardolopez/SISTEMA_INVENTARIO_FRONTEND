@@ -15,6 +15,6 @@ export class LowStockList implements OnInit {
   protected Math = Math;
 
   ngOnInit(): void {
-    this.productService.getLowStock().subscribe(p => this.products.set(p));
+    this.productService.getLowStock().subscribe((p) => this.products.set(p));
   }
 }

@@ -16,16 +16,24 @@
       <tbody class="divide-y divide-slate-50">
         @for (m of movements(); track m.id) {
           <tr class="hover:bg-slate-50/60 transition-colors">
-            <td class="px-4 py-2.5 text-slate-400 whitespace-nowrap text-xs">{{ m.createdAt | date:'MMM d, h:mm a' }}</td>
+            <td class="px-4 py-2.5 text-slate-400 whitespace-nowrap text-xs">
+              {{ m.createdAt | date: 'MMM d, h:mm a' }}
+            </td>
             <td class="px-4 py-2.5 font-medium text-slate-700 max-w-[140px] truncate">{{ m.productName }}</td>
             <td class="px-4 py-2.5">
               @if (m.type === 'entry') {
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-50 text-emerald-700">
-                  <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>In
+                <span
+                  class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-50 text-emerald-700"
+                >
+                  <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
+                  In
                 </span>
               } @else {
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-red-50 text-red-700">
-                  <span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>Out
+                <span
+                  class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-red-50 text-red-700"
+                >
+                  <span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                  Out
                 </span>
               }
             </td>

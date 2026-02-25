@@ -4,8 +4,13 @@
       <h1 class="text-2xl font-bold text-slate-800">Movements</h1>
       <p class="text-sm text-slate-500 mt-1">Track inventory entries and exits</p>
     </div>
-    <button (click)="navigateToCreate()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium text-sm">
-      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+    <button
+      (click)="navigateToCreate()"
+      class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium text-sm"
+    >
+      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+      </svg>
       Record Movement
     </button>
   </div>
@@ -13,13 +18,44 @@
   <!-- Filters -->
   <div class="flex flex-col sm:flex-row gap-3">
     <div class="flex rounded-lg border border-slate-300 overflow-hidden text-sm">
-      <button (click)="onTypeFilter('all')" [class]="typeFilter() === 'all' ? 'bg-primary-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'" class="px-4 py-2 font-medium transition-colors">All</button>
-      <button (click)="onTypeFilter('entry')" [class]="typeFilter() === 'entry' ? 'bg-emerald-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'" class="px-4 py-2 font-medium border-l border-slate-300 transition-colors">Entries</button>
-      <button (click)="onTypeFilter('exit')" [class]="typeFilter() === 'exit' ? 'bg-red-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'" class="px-4 py-2 font-medium border-l border-slate-300 transition-colors">Exits</button>
+      <button
+        (click)="onTypeFilter('all')"
+        [class]="typeFilter() === 'all' ? 'bg-primary-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'"
+        class="px-4 py-2 font-medium transition-colors"
+      >
+        All
+      </button>
+      <button
+        (click)="onTypeFilter('entry')"
+        [class]="typeFilter() === 'entry' ? 'bg-emerald-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'"
+        class="px-4 py-2 font-medium border-l border-slate-300 transition-colors"
+      >
+        Entries
+      </button>
+      <button
+        (click)="onTypeFilter('exit')"
+        [class]="typeFilter() === 'exit' ? 'bg-red-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'"
+        class="px-4 py-2 font-medium border-l border-slate-300 transition-colors"
+      >
+        Exits
+      </button>
     </div>
     <div class="relative flex-1">
-      <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-      <input type="text" placeholder="Search by product..." (input)="onSearch($event)" class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none" />
+      <svg
+        class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+      <input
+        type="text"
+        placeholder="Search by product..."
+        (input)="onSearch($event)"
+        class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+      />
     </div>
   </div>
 
@@ -40,11 +76,13 @@
         <tbody class="divide-y divide-slate-100">
           @for (m of filteredMovements(); track m.id) {
             <tr class="hover:bg-slate-50 transition-colors">
-              <td class="px-4 py-3 text-slate-500 whitespace-nowrap">{{ m.createdAt | date:'MMM d, y h:mm a' }}</td>
+              <td class="px-4 py-3 text-slate-500 whitespace-nowrap">{{ m.createdAt | date: 'MMM d, y h:mm a' }}</td>
               <td class="px-4 py-3 font-medium text-slate-800">{{ m.productName }}</td>
               <td class="px-4 py-3">
                 @if (m.type === 'entry') {
-                  <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-700">Entry</span>
+                  <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-700">
+                    Entry
+                  </span>
                 } @else {
                   <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-700">Exit</span>
                 }

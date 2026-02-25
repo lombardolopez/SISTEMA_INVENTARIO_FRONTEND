@@ -1,7 +1,9 @@
 <div>
   <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
     <h3 class="text-sm font-semibold text-slate-800">Low Stock Items</h3>
-    <span class="text-xs text-amber-600 bg-amber-50 border border-amber-100 px-2 py-0.5 rounded-full font-medium">Needs Attention</span>
+    <span class="text-xs text-amber-600 bg-amber-50 border border-amber-100 px-2 py-0.5 rounded-full font-medium">
+      Needs Attention
+    </span>
   </div>
   <div class="overflow-x-auto">
     <table class="w-full text-sm">
@@ -18,7 +20,10 @@
         @for (p of products(); track p.id) {
           <tr class="hover:bg-slate-50/60 transition-colors">
             <td class="px-5 py-3 font-medium text-slate-700">{{ p.name }}</td>
-            <td class="px-5 py-3 text-right font-bold" [class]="p.currentStock === 0 ? 'text-red-600' : 'text-amber-600'">
+            <td
+              class="px-5 py-3 text-right font-bold"
+              [class]="p.currentStock === 0 ? 'text-red-600' : 'text-amber-600'"
+            >
               {{ p.currentStock }}
             </td>
             <td class="px-5 py-3 text-right text-slate-400">{{ p.minimumStock }}</td>
